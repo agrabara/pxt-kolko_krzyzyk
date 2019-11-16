@@ -1,3 +1,4 @@
+// ING CoderDojo 2019.11.16
 // Ustawiamy wszystkie potrzebne zmienne
 // Jak wygląda plansza:
 // oś x:
@@ -62,16 +63,51 @@ MICHAL_1 = 1
 // jasność kursora
 let kursor = 250
 
+// Sterowanie kursorem
+// Po naciśnięciu klawisza "A" kursor przesuwa się po planszy - w prawo i po osiągnięciu 
+// skrajnej prawej krawędzi wraca do lewej krawędzi i przesuwa się na dół
+// po osiądnięciu dolnej grawędzi wraca na górę
+input.onButtonPressed(Button.A, function () {
+    x += 1 //przesuwamy się w prawo
+    if (x > 2) { // jeśli krawędź prawa
+        y += 1   // piętro niżej schodzimy
+        x = 0    // i wracamy do lewej krawędzi
+    }
+    if (y > 2) { // jeśli osiągnęliśmy dolną krawędź
+        y = 0    // wracamy na górę
+    }
+})
 
-
+// funkcja akcyjna - gramy
+// po naciśnięciu klawisza "B"
+// jeśli jest nasza kolej (czyli MICHAL_1 jest równe "1")
+// sprawdzamy na której pozycji jest kursor (x,y)
+// oraz czy w tym miejscu nie ma już postawionego symbolu
+// jeśli nie ma - wstawiamy tam nasz symbol oraz przesyłamy kod kursora przeciwnikowi
+// jeśli jest - nie pozwalamy odgrywając dźwięk
+//
+// Jak wygląda plansza:
+// oś x:
+// o    0   1   2
+// ś 0  KK1 KK2 KK3
+// y 1  KK4 KK5 KK6
+//   2  KK7 KK8 KK9
+//
+// Jak kodujemy pozycje:
+// oś x:
+// o    0   1   2
+// ś 0  00  10  20
+// y 1  01  11  21
+//   2  02  12  22
+// tymi kodamy posługujemy się w komunikacji z przeciwnikiem
 input.onButtonPressed(Button.B, function () {
-    if (MICHAL_1 == 1) {
-        if (x == 0 && y == 0) {
-            if (KK1 == 0) {
-                KK1 = KOLKO
-                radio.sendNumber(0)
-                MICHAL_1 = 0
-            } else {
+    if (MICHAL_1 == 1) {        // sprawdzamy czy możemy wykonać ruch - czy to nasza kolej
+        if (x == 0 && y == 0) { // pozycja (0,0) KK1
+            if (KK1 == 0) {     // jeśli nie ma żadnego symbolu
+                KK1 = KOLKO     // wstawiamy tam nasz
+                radio.sendNumber(0)  // wysyłamy kod przewciwnikowi
+                MICHAL_1 = 0    // teraz ruch przeciwnika - czekamy na jego reakcję
+            } else {            // pole już ma wstawiony symbol -> gramy sygnał ostrzegawczy
                 music.playTone(466, music.beat(BeatFraction.Quarter))
             }
         }
@@ -149,18 +185,26 @@ input.onButtonPressed(Button.B, function () {
         }
     }
 })
-input.onButtonPressed(Button.A, function () {
-    led.plotBrightness(x, y, 0)
-    x += 1
-    if (x > 2) {
-        y += 1
-        x = 0
-    }
-    if (y > 2) {
-        y = 0
-    }
-    led.plotBrightness(x, y, 255)
-})
+
+
+// funkcja oczekująca na ruch przeciwnika
+// po odebraniu komunikatu - dekoduje na której pozycji postawić symbol 
+// ale symbol przeciwnika -> janość diody ustawiona za pomocą zmiennej KRZYZYK
+// funkcja ustawia też naszą kolej (czyli MICHAL_1 jest równe "1")
+// Jak wygląda plansza:
+// oś x:
+// o    0   1   2
+// ś 0  KK1 KK2 KK3
+// y 1  KK4 KK5 KK6
+//   2  KK7 KK8 KK9
+//
+// Jak kodujemy pozycje:
+// oś x:
+// o    0   1   2
+// ś 0  00  10  20
+// y 1  01  11  21
+//   2  02  12  22
+// tymi kodamy posługujemy się w komunikacji z przeciwnikiem
 radio.onReceivedNumber(function (receivedNumber) {
     MICHAL_1 = 1
     if (receivedNumber == 0) {
@@ -191,6 +235,7 @@ radio.onReceivedNumber(function (receivedNumber) {
         KK9 = KRZYZYK
     }
 })
+
 
 
 // Główna pętla programu -> wyświetla planszę oraz pokazuje gdzie jest teraz kursor
