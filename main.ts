@@ -1,3 +1,69 @@
+// Ustawiamy wszystkie potrzebne zmienne
+// Jak wygląda plansza:
+// oś x:
+// o    0   1   2
+// ś 0  KK1 KK2 KK3
+// y 1  KK4 KK5 KK6
+//   2  KK7 KK8 KK9
+//
+// wpisanie do odpowiedniej zmiennej KK1-KK9 wartości innej niż "0"
+// oznacza postawienie odpowiedniego symbolu
+// aby sobie ułatwić - wartości które należy wpisać do zmiennych KK1-KK9 
+// wpisaliśmy do zmiennych
+// Kółko - KOLKO
+// Krzyżyk - KRZYZYK
+// bezpośrednio oznaczają jak jasno ma się świecić dioda
+let KK9 = 0
+let KK8 = 0
+let KK7 = 0
+let KK6 = 0
+let KK5 = 0
+let KK4 = 0
+let KK3 = 0
+let KK2 = 0
+let KK1 = 0
+
+let x = 0
+let y = 0
+
+let MICHAL_1 = 0
+
+let KRZYZYK = 0
+let KOLKO = 0
+
+// ustawiamy po którym tulelu będziemy się komunikować
+// tę wartość ustawaimy parami -> każdy z graczy musi mieć tę samą grupę/tunel
+// czyli pierwsza para ustawia "1" a kolejna para ustawia "2"
+radio.setGroup(1)
+
+// pozycje kursora ustawiamy w górnym lewym rogu 
+y = 0
+x = 0
+
+// zerujemy całą planszę
+KK1 = 0
+KK2 = 0
+KK3 = 0
+KK4 = 0
+KK5 = 0
+KK6 = 0
+KK7 = 0
+KK8 = 0
+KK9 = 0
+
+// Kółko świeci słabo -> 10
+KOLKO = 10
+// Krzyżyk świeci mocno -> 255
+KRZYZYK = 255
+
+// Jeśli Michal_1 m awartość 1 to jest mój ruch - mogę postawić swój symbol
+MICHAL_1 = 1
+
+// jasność kursora
+let kursor = 250
+
+
+
 input.onButtonPressed(Button.B, function () {
     if (MICHAL_1 == 1) {
         if (x == 0 && y == 0) {
@@ -98,63 +164,36 @@ input.onButtonPressed(Button.A, function () {
 radio.onReceivedNumber(function (receivedNumber) {
     MICHAL_1 = 1
     if (receivedNumber == 0) {
-        KK1 = KRZYRZYK
+        KK1 = KRZYZYK
     }
     if (receivedNumber == 10) {
-        KK2 = KRZYRZYK
+        KK2 = KRZYZYK
     }
     if (receivedNumber == 20) {
-        KK3 = KRZYRZYK
+        KK3 = KRZYZYK
     }
     if (receivedNumber == 1) {
-        KK4 = KRZYRZYK
+        KK4 = KRZYZYK
     }
     if (receivedNumber == 11) {
-        KK5 = KRZYRZYK
+        KK5 = KRZYZYK
     }
     if (receivedNumber == 21) {
-        KK6 = KRZYRZYK
+        KK6 = KRZYZYK
     }
     if (receivedNumber == 2) {
-        KK7 = KRZYRZYK
+        KK7 = KRZYZYK
     }
     if (receivedNumber == 12) {
-        KK8 = KRZYRZYK
+        KK8 = KRZYZYK
     }
     if (receivedNumber == 22) {
-        KK9 = KRZYRZYK
+        KK9 = KRZYZYK
     }
 })
-let MICHAL_1 = 0
-let KRZYRZYK = 0
-let KOLKO = 0
-let KK9 = 0
-let KK8 = 0
-let KK7 = 0
-let KK6 = 0
-let KK5 = 0
-let KK4 = 0
-let KK3 = 0
-let KK2 = 0
-let KK1 = 0
-let x = 0
-let y = 0
-radio.setGroup(1)
-y = 0
-x = 0
-KK1 = 0
-KK2 = 0
-KK3 = 0
-KK4 = 0
-KK5 = 0
-KK6 = 0
-KK7 = 0
-KK8 = 0
-KK9 = 0
-KOLKO = 10
-KRZYRZYK = 255
-MICHAL_1 = 1
-let kursor = 250
+
+
+// Główna pętla programu -> wyświetla planszę oraz pokazuje gdzie jest teraz kursor
 basic.forever(function () {
     led.plotBrightness(0, 0, KK1)
     led.plotBrightness(1, 0, KK2)
