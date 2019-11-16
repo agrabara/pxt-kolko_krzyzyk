@@ -53,11 +53,14 @@ KK8 = 0
 KK9 = 0
 
 // Kółko świeci słabo -> 10
+// UWAGA => drugi gracz może zamienić te wartości miejscami -> jeśli chce
 KOLKO = 10
 // Krzyżyk świeci mocno -> 255
+// UWAGA => drugi gracz może zamienić te wartości miejscami -> jeśli chce
 KRZYZYK = 255
 
 // Jeśli Michal_1 m awartość 1 to jest mój ruch - mogę postawić swój symbol
+// UWAGA => tylko jeden z graczy powinien mieć ustawioną "1", drugi "0"
 MICHAL_1 = 1
 
 // jasność kursora
